@@ -4,7 +4,6 @@ import { StatusBar } from 'expo-status-bar';
 import { View, I18nManager } from 'react-native';
 import { useTheme } from '@/hooks/useTheme';
 import { setupNotificationHandler } from '@/utils/notifications';
-import '../global.css';
 
 // Force RTL for Arabic
 I18nManager.allowRTL(true);
