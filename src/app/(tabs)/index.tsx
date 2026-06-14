@@ -40,6 +40,7 @@ export default function AdhkarScreen() {
   const [showAddModal, setShowAddModal] = useState(false);
   const [newAzkarText, setNewAzkarText] = useState('');
   const [newAzkarCount, setNewAzkarCount] = useState('33');
+  const [newAzkarColor, setNewAzkarColor] = useState(theme.neon);
   const [showAzkarDetails, setShowAzkarDetails] = useState<string | null>(null);
   
   const filteredAzkar = azkar.filter(item => item.category === selectedCategory);
@@ -60,6 +61,7 @@ export default function AdhkarScreen() {
       addAzkar(newAzkarText.trim(), parseInt(newAzkarCount) || 33, selectedCategory);
       setNewAzkarText('');
       setNewAzkarCount('33');
+      setNewAzkarColor(theme.neon);
       setShowAddModal(false);
     }
   };
@@ -263,10 +265,34 @@ export default function AdhkarScreen() {
               textAlign="right"
             />
             
+            <Text style={[styles.modalTitle, { color: theme.text, fontSize: 16, marginBottom: 12 }]}>
+              اختر لونًا:
+            </Text>
+            <View style={styles.colorGrid}>
+              {[
+                theme.neon,
+                theme.progress,
+                theme.success,
+                theme.danger,
+                theme.neonSecondary,
+                theme.accent,
+              ].map((color, index) => (
+                <TouchableOpacity
+                  key={index}
+                  style={[
+                    styles.colorOption,
+                    { backgroundColor: color },
+                    newAzkarColor === color && styles.selectedColorOption,
+                  ]}
+                  onPress={() => setNewAzkarColor(color)}
+                />
+              ))}
+            </View>
+            
             <View style={styles.modalButtons}>
               <TouchableOpacity
                 style={[styles.modalButton, { backgroundColor: theme.neon }]}
-                onPress={handleAddAzkar}
+                onPress={() => handleAddAzkar()}
               >
                 <Text style={styles.modalButtonText}>حفظ</Text>
               </TouchableOpacity>
@@ -474,5 +500,25 @@ const styles = StyleSheet.create({
   colorText: {
     fontSize: 12,
   },
+  // Color Picker Styles
+  colorGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    gap: 8,
+    marginBottom: 20,
+  },
+  colorOption: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    borderWidth: 2,
+    borderColor: theme.border,
+  },
+  selectedColorOption: {
+    borderColor: theme.text,
+    borderWidth: 3,
+  },
 });
+
 

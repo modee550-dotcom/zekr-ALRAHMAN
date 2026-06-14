@@ -53,7 +53,7 @@ export const useAdhkarStore = create<AdhkarState>((set) => ({
       azkar: state.azkar.map((item) => ({ ...item, completed: 0 })),
     })),
     
-  addAzkar: (text, count, category) =>
+  addAzkar: (text, count, category, color?: string) =>
     set((state) => ({
       azkar: [
         ...state.azkar,
@@ -64,6 +64,9 @@ export const useAdhkarStore = create<AdhkarState>((set) => ({
           completed: 0,
           category,
           createdAt: Date.now(),
+          virtue: undefined,
+          meaning: undefined,
+          color: color || undefined,
         },
       ],
     })),
