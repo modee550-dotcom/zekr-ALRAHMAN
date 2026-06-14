@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '@/hooks/useTheme';
-import { useSettingsStore, ThemeMode, AppTheme } from '@/stores/settingsStore';
+import { useSettingsStore, ThemeMode, AppTheme, HardwareCounterMode } from '@/stores/settingsStore';
 import { useStatsStore } from '@/stores/statsStore';
 
 export default function SettingsScreen() {
@@ -31,6 +31,12 @@ export default function SettingsScreen() {
     setNotificationTime,
     pinCode,
     setPinCode,
+    fontScale,
+    setFontScale,
+    hardwareCounterMode,
+    setHardwareCounterMode,
+    bluetoothHeadsetEnabled,
+    setBluetoothHeadsetEnabled,
   } = useSettingsStore();
   const { gender, setGender, ageGroup, setAgeGroup, region, setRegion, targetCount, setTargetCount } = useStatsStore();
   
@@ -58,6 +64,13 @@ export default function SettingsScreen() {
     { value: 'طفل', label: 'طفل' },
     { value: 'بالغ', label: 'بالغ' },
     { value: 'كبير', label: 'كبير' },
+  ];
+
+  const hardwareOptions: { value: HardwareCounterMode; label: string }[] = [
+    { value: 'disabled', label: 'معطل' },
+    { value: 'volume-up', label: 'رفع الصوت' },
+    { value: 'volume-down', label: 'خفض الصوت' },
+    { value: 'both', label: 'كلاهما' },
   ];
 
   const handleSetPin = () => {
@@ -184,6 +197,65 @@ export default function SettingsScreen() {
               thumbColor="#fff"
             />
           </View>
+        </View>
+
+        {/* Hardware Counter */}
+        <View style={[styles.section, { backgroundColor: theme.card, borderColor: theme.border }]}>
+          <Text style={[styles.sectionTitle, { color: theme.text }]}>العداد بالأزرار المادية</Text>
+          
+          <View style={styles.settingItem}>
+            <Text style={[styles.settingLabel, { color: theme.textSecondary }]}>زر رفع الصوت</Text>
+            {renderOption(hardwareOptions, hardwareCounterMode, setHardwareCounterMode)}
+          </View>
+          
+          <View style={styles.switchItem}>
+            <Text style={[styles.switchLabel, { color: theme.text }]}>دعم سماعة البلوتوث</Text>
+            <Switch
+              value={bluetoothHeadsetEnabled}
+              onValueChange={setBluetoothHeadsetEnabled}
+              trackColor={{ false: theme.border, true: theme.neon }}
+              thumbColor="#fff"
+            />
+          </View>
+          <Text style={[styles.hintText, { color: theme.textSecondary }]}>
+            يعمل هذا الخيار مع التطبيقات الأصلية فقط (يحتاج تحديث للجهاز)
+          </Text>
+        </View>
+
+        {/* Font Size */}
+        <View style={[styles.section, { backgroundColor: theme.card, borderColor: theme.border }]}>
+          <Text style={[styles.sectionTitle, { color: theme.text }]}>حجم الخط</Text>
+          
+          <View style={styles.fontSliderContainer}>
+            <Text style={[styles.fontSliderLabel, { color: theme.textSecondary }]}>70%</Text>
+            <View style={styles.fontSliderTrack}>
+              <TouchableOpacity
+                style={[styles.fontSliderBtn, { backgroundColor: theme.cardSecondary }]}
+                onPress={() => setFontScale(Math.max(0.7, fontScale - 0.1))}
+              >
+                <Ionicons name="remove" size={20} color={theme.text} />
+              </TouchableOpacity>
+              <Text style={[styles.fontSliderValue, { color: theme.neon }]}>
+                {Math.round(fontScale * 100)}%
+              </Text>
+              <TouchableOpacity
+                style={[styles.fontSliderBtn, { backgroundColor: theme.cardSecondary }]}
+                onPress={() => setFontScale(Math.min(2.0, fontScale + 0.1))}
+              >
+                <Ionicons name="add" size={20} color={theme.text} />
+              </TouchableOpacity>
+            </View>
+            <Text style={[styles.fontSliderLabel, { color: theme.textSecondary }]}>200%</Text>
+          </View>
+
+          <Text style={[styles.fontPreview, { 
+            color: theme.text, 
+            fontSize: 14 * fontScale,
+            textAlign: 'right',
+            marginTop: 12,
+          }]}>
+            معاينة: الحمد لله
+          </Text>
         </View>
 
         {/* Notifications */}
@@ -429,5 +501,47 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
     fontWeight: '600',
+  },
+  hintText: {
+    fontSize: 12,
+    textAlign: 'right',
+    marginTop: 8,
+  },
+  fontSliderContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 12,
+  },
+  fontSliderLabel: {
+    fontSize: 12,
+    width: 32,
+    textAlign: 'center',
+  },
+  fontSliderTrack: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 12,
+  },
+  fontSliderBtn: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  fontSliderValue: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    minWidth: 50,
+    textAlign: 'center',
+  },
+  fontPreview: {
+    marginTop: 12,
+    padding: 12,
+    borderRadius: 8,
+    textAlign: 'right',
   },
 });
