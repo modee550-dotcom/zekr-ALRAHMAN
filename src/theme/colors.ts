@@ -1,0 +1,46 @@
+export const lightTheme = {
+  background: '#fff7ed',
+  card: '#ffffff',
+  cardSecondary: '#fff7ed',
+  text: '#1e293b',
+  textSecondary: '#64748b',
+  border: '#fed7aa',
+  neon: '#f97316',
+  neonSecondary: '#fb923c',
+  accent: '#ea580c',
+  progress: '#f97316',
+  progressBg: '#fed7aa',
+  tabBg: '#ffffff',
+  tabActive: '#f97316',
+  tabInactive: '#94a3b8',
+  success: '#22c55e',
+  danger: '#ef4444',
+  shadow: 'rgba(249, 115, 22, 0.15)',
+};
+
+export const darkTheme = {
+  background: '#0a0f1a',
+  card: '#1e293b',
+  cardSecondary: '#0f172a',
+  text: '#f1f5f9',
+  textSecondary: '#94a3b8',
+  border: '#334155',
+  neon: '#22d3ee',
+  neonSecondary: '#fb923c',
+  accent: '#06b6d4',
+  progress: '#22d3ee',
+  progressBg: '#164e63',
+  tabBg: '#0f172a',
+  tabActive: '#22d3ee',
+  tabInactive: '#64748b',
+  success: '#4ade80',
+  danger: '#f87171',
+  shadow: 'rgba(34, 211, 238, 0.2)',
+};
+
+export type Theme = typeof lightTheme;
+
+export const themes = {
+  light: lightTheme,
+  dark: darkTheme,
+};

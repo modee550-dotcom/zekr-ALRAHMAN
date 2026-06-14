@@ -1,0 +1,27 @@
+// This is a placeholder SVG icon - replace with your actual app icon
+// You can generate icons using tools like Expo's asset generation or Figma
+
+const iconSvg = `
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a0f1a"/>
+      <stop offset="100%" style="stop-color:#1e293b"/>
+    </linearGradient>
+    <linearGradient id="neon" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#22d3ee"/>
+      <stop offset="100%" style="stop-color:#fb923c"/>
+    </linearGradient>
+  </defs>
+  <rect width="1024" height="1024" rx="200" fill="url(#grad)"/>
+  <text x="512" y="450" font-family="Arial" font-size="200" fill="url(#neon)" text-anchor="middle" font-weight="bold">حصن</text>
+  <text x="512" y="650" font-family="Arial" font-size="160" fill="url(#neon)" text-anchor="middle" font-weight="bold">نفسك</text>
+  <circle cx="512" cy="350" r="80" fill="none" stroke="#22d3ee" stroke-width="8" opacity="0.5"/>
+  <text x="512" y="370" font-family="Arial" font-size="80" fill="#22d3ee" text-anchor="middle">📿</text>
+</svg>
+`;
+
+// Convert SVG to PNG would be done at build time
+// For now, this is a reference for the icon design
+
+export const AppIcon = iconSvg;
