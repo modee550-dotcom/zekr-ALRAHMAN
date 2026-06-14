@@ -40,6 +40,7 @@ export default function AdhkarScreen() {
   const [showAddModal, setShowAddModal] = useState(false);
   const [newAzkarText, setNewAzkarText] = useState('');
   const [newAzkarCount, setNewAzkarCount] = useState('33');
+  const [showAzkarDetails, setShowAzkarDetails] = useState<string | null>(null);
   
   const filteredAzkar = azkar.filter(item => item.category === selectedCategory);
   const totalCompleted = filteredAzkar.reduce((sum, item) => sum + item.completed, 0);
@@ -156,12 +157,47 @@ export default function AdhkarScreen() {
                 },
               ]}
             >
-              <View style={styles.azkarContent}>
-                <Text style={[styles.azkarText, { color: theme.text }]}>{item.text}</Text>
-                <Text style={[styles.azkarCount, { color: theme.textSecondary }]}>
-                  {item.completed} / {item.count}
-                </Text>
-              </View>
+              <TouchableOpacity
+                onPress={() => {
+                  if (showAzkarDetails === item.id) {
+                    setShowAzkarDetails(null);
+                  } else {
+                    setShowAzkarDetails(item.id);
+                  }
+                }}
+              >
+                <View style={styles.azkarContent}>
+                  <Text style={[styles.azkarText, { color: theme.text }]}>{item.text}</Text>
+                  <Text style={[styles.azkarCount, { color: theme.textSecondary }]}>
+                    {item.completed} / {item.count}
+                  </Text>
+                  {item.virtue && showAzkarDetails === item.id && (
+                    <View style={styles.detailsContainer}>
+                      <Text style={[styles.detailTitle, { color: theme.neon }]}>
+                        الفضيلة:
+                      </Text>
+                      <Text style={[styles.detailText, { color: theme.textSecondary }]}>
+                        {item.virtue}
+                      </Text>
+                      <Text style={[styles.detailTitle, { color: theme.neon, marginTop: 12 }]}>
+                        المعنى:
+                      </Text>
+                      <Text style={[styles.detailText, { color: theme.textSecondary }]}>
+                        {item.meaning}
+                      </Text>
+                      <Text style={[styles.detailTitle, { color: theme.neon, marginTop: 12 }]}>
+                        اللون:
+                      </Text>
+                      <View style={styles.colorIndicator}>
+                        <View style={[styles.colorDot, { backgroundColor: item.color || theme.neon }]} />
+                        <Text style={[styles.colorText, { color: theme.textSecondary }]}>
+                          {item.color}
+                        </Text>
+                      </View>
+                    </View>
+                  )}
+                </View>
+              </TouchableOpacity>
               
               <View style={styles.azkarControls}>
                 <TouchableOpacity
@@ -407,4 +443,36 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
   },
+  // Details Styles
+  detailsContainer: {
+    marginTop: 12,
+    paddingTop: 12,
+    borderTopWidth: 1,
+    borderTopColor: theme.border,
+  },
+  detailTitle: {
+    fontSize: 14,
+    fontWeight: '600',
+    marginBottom: 4,
+  },
+  detailText: {
+    fontSize: 13,
+    lineHeight: 20,
+    marginBottom: 8,
+  },
+  colorIndicator: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    marginTop: 4,
+  },
+  colorDot: {
+    width: 16,
+    height: 16,
+    borderRadius: 8,
+  },
+  colorText: {
+    fontSize: 12,
+  },
 });
+
