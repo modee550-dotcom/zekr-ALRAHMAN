@@ -1,6 +1,8 @@
 import { create } from 'zustand';
 import { defaultAzkar, AzkarItem, AzkarCategory } from '@/data/defaultAzkar';
 
+export type { AzkarCategory };
+
 interface AdhkarState {
   azkar: AzkarItem[];
   selectedCategory: AzkarCategory;

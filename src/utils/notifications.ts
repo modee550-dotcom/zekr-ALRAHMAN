@@ -1,5 +1,6 @@
 import * as Notifications from 'expo-notifications';
 import { Platform } from 'react-native';
+import { SchedulableTriggerInputTypes } from 'expo-notifications';
 
 export async function requestNotificationPermissions(): Promise<boolean> {
   const { status: existingStatus } = await Notifications.getPermissionsAsync();
@@ -23,9 +24,9 @@ export async function scheduleDailyReminder(hour: number, minute: number): Promi
       sound: true,
     },
     trigger: {
+      type: SchedulableTriggerInputTypes.DAILY,
       hour,
       minute,
-      repeats: true,
     },
   });
 }

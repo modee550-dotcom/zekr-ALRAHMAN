@@ -72,8 +72,6 @@ export default function StatsScreen() {
               xAxisLabelTextStyle={{ color: theme.textSecondary, fontSize: 10 }}
               isAnimated
               barBorderRadius={4}
-              barStyle={{}}
-              showValuesOnTopOfBars
             />
           </View>
           <View style={styles.chartLegend}>

@@ -326,7 +326,7 @@ export default function SettingsScreen() {
           
           <TouchableOpacity style={styles.settingItem}>
             <Text style={[styles.settingLabel, { color: theme.text }]}>استيراد البيانات</Text>
-            <Ionicons name="upload" size={20} color={theme.neon} />
+            <Ionicons name="cloud-upload" size={20} color={theme.neon} />
           </TouchableOpacity>
         </View>
 

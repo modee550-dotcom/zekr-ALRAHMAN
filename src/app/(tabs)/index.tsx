@@ -469,12 +469,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
   },
-  // Details Styles
+  // Details Styles - use static colors (theme not available in StyleSheet.create)
   detailsContainer: {
     marginTop: 12,
     paddingTop: 12,
     borderTopWidth: 1,
-    borderTopColor: theme.border,
+    borderTopColor: '#334155',
   },
   detailTitle: {
     fontSize: 14,
@@ -513,10 +513,10 @@ const styles = StyleSheet.create({
     height: 32,
     borderRadius: 16,
     borderWidth: 2,
-    borderColor: theme.border,
+    borderColor: '#334155',
   },
   selectedColorOption: {
-    borderColor: theme.text,
+    borderColor: '#f1f5f9',
     borderWidth: 3,
   },
 });
