@@ -8,8 +8,10 @@ import {
   Switch,
   StyleSheet,
   Alert,
+  Image,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import * as ImagePicker from 'expo-image-picker';
 import { useTheme } from '@/hooks/useTheme';
 import { useSettingsStore, ThemeMode, AppTheme, HardwareCounterMode } from '@/stores/settingsStore';
 import { useStatsStore } from '@/stores/statsStore';
@@ -37,6 +39,8 @@ export default function SettingsScreen() {
     setHardwareCounterMode,
     bluetoothHeadsetEnabled,
     setBluetoothHeadsetEnabled,
+    wallpaperUri,
+    setWallpaperUri,
   } = useSettingsStore();
   const { gender, setGender, ageGroup, setAgeGroup, region, setRegion, targetCount, setTargetCount } = useStatsStore();
   
@@ -53,6 +57,7 @@ export default function SettingsScreen() {
     { value: 'night-city', label: 'مدينة الليل' },
     { value: 'desert-sunrise', label: 'شروق الصحراء' },
     { value: 'ocean-dusk', label: 'غروب المحيط' },
+    { value: 'custom', label: 'مخصص' },
   ];
 
   const genderOptions: { value: 'ذكر' | 'أنثى'; label: string }[] = [
@@ -79,6 +84,20 @@ export default function SettingsScreen() {
       setShowPinModal(false);
       setNewPin('');
       Alert.alert('تم', 'تم تعيين رمز الدفتر السري');
+    }
+  };
+
+  const pickWallpaper = async () => {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ['images'],
+      allowsEditing: true,
+      aspect: [9, 16],
+      quality: 0.8,
+    });
+
+    if (!result.canceled && result.assets[0]) {
+      setWallpaperUri(result.assets[0].uri);
+      setAppTheme('custom');
     }
   };
 
@@ -173,6 +192,40 @@ export default function SettingsScreen() {
             {renderOption(appThemeOptions, appTheme, setAppTheme)}
           </View>
         </View>
+
+        {/* Custom Wallpaper */}
+        {appTheme === 'custom' && (
+          <View style={[styles.section, { backgroundColor: theme.card, borderColor: theme.border }]}>
+            <Text style={[styles.sectionTitle, { color: theme.text }]}>خلفية مخصصة</Text>
+            
+            {wallpaperUri ? (
+              <View style={styles.wallpaperPreview}>
+                <Image source={{ uri: wallpaperUri }} style={styles.wallpaperImage} />
+                <TouchableOpacity
+                  style={[styles.removeWallpaperBtn, { backgroundColor: theme.danger }]}
+                  onPress={() => {
+                    Alert.alert('إزالة الخلفية', 'هل أنت متأكد من إزالة الخلفية المخصصة؟', [
+                      { text: 'إلغاء', style: 'cancel' },
+                      { text: 'إزالة', style: 'destructive', onPress: () => setWallpaperUri(null) },
+                    ]);
+                  }}
+                >
+                  <Ionicons name="trash" size={20} color="#fff" />
+                  <Text style={styles.removeWallpaperText}>إزالة</Text>
+                </TouchableOpacity>
+              </View>
+            ) : (
+              <TouchableOpacity
+                style={[styles.pickWallpaperBtn, { backgroundColor: theme.cardSecondary, borderColor: theme.border }]}
+                onPress={pickWallpaper}
+              >
+                <Ionicons name="image" size={32} color={theme.neon} />
+                <Text style={[styles.pickWallpaperText, { color: theme.text }]}>اختر صورة من المعرض</Text>
+                <Text style={[styles.pickWallpaperHint, { color: theme.textSecondary }]}>يُفضل صورة بتنسيق عمودي 9:16</Text>
+              </TouchableOpacity>
+            )}
+          </View>
+        )}
 
         {/* Sound & Vibration */}
         <View style={[styles.section, { backgroundColor: theme.card, borderColor: theme.border }]}>
@@ -543,5 +596,43 @@ const styles = StyleSheet.create({
     padding: 12,
     borderRadius: 8,
     textAlign: 'right',
+  },
+  wallpaperPreview: {
+    alignItems: 'center',
+    gap: 12,
+  },
+  wallpaperImage: {
+    width: '100%',
+    height: 200,
+    borderRadius: 12,
+    resizeMode: 'cover',
+  },
+  removeWallpaperBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 8,
+  },
+  removeWallpaperText: {
+    color: '#fff',
+    fontSize: 14,
+    fontWeight: '600',
+  },
+  pickWallpaperBtn: {
+    alignItems: 'center',
+    padding: 24,
+    borderRadius: 12,
+    borderWidth: 2,
+    borderStyle: 'dashed',
+    gap: 8,
+  },
+  pickWallpaperText: {
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  pickWallpaperHint: {
+    fontSize: 12,
   },
 });

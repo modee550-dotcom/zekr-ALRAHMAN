@@ -29,7 +29,14 @@
     "plugins": [
       "expo-router",
       "expo-secure-store",
-      "expo-notifications"
+      "expo-notifications",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "السماح للتطبيق بالوصول إلى المعرض لاختيار خلفية مخصصة",
+          "cameraPermission": "السماح للتطبيق بالوصول إلى الكاميرا"
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true

@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 
 export type ThemeMode = 'system' | 'light' | 'dark';
-export type AppTheme = 'night-city' | 'desert-sunrise' | 'ocean-dusk';
+export type AppTheme = 'night-city' | 'desert-sunrise' | 'ocean-dusk' | 'custom';
 export type HardwareCounterMode = 'disabled' | 'volume-up' | 'volume-down' | 'both';
 
 interface SettingsState {
@@ -16,6 +16,7 @@ interface SettingsState {
   fontScale: number;
   hardwareCounterMode: HardwareCounterMode;
   bluetoothHeadsetEnabled: boolean;
+  wallpaperUri: string | null;
   
   setThemeMode: (mode: ThemeMode) => void;
   setAppTheme: (theme: AppTheme) => void;
@@ -28,6 +29,7 @@ interface SettingsState {
   setFontScale: (scale: number) => void;
   setHardwareCounterMode: (mode: HardwareCounterMode) => void;
   setBluetoothHeadsetEnabled: (enabled: boolean) => void;
+  setWallpaperUri: (uri: string | null) => void;
 }
 
 export const useSettingsStore = create<SettingsState>((set) => ({
@@ -42,6 +44,7 @@ export const useSettingsStore = create<SettingsState>((set) => ({
   fontScale: 1.0,
   hardwareCounterMode: 'disabled',
   bluetoothHeadsetEnabled: false,
+  wallpaperUri: null,
   
   setThemeMode: (mode) => set({ themeMode: mode }),
   setAppTheme: (theme) => set({ appTheme: theme }),
@@ -54,4 +57,5 @@ export const useSettingsStore = create<SettingsState>((set) => ({
   setFontScale: (scale) => set({ fontScale: scale }),
   setHardwareCounterMode: (mode) => set({ hardwareCounterMode: mode }),
   setBluetoothHeadsetEnabled: (enabled) => set({ bluetoothHeadsetEnabled: enabled }),
+  setWallpaperUri: (uri) => set({ wallpaperUri: uri }),
 }));
