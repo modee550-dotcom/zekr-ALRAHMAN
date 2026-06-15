@@ -8,6 +8,7 @@ import {
   Modal,
   TextInput,
   Alert,
+  Share,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '@/hooks/useTheme';
@@ -64,6 +65,31 @@ export default function AdhkarScreen() {
       setNewAzkarColor(theme.neon);
       setShowAddModal(false);
     }
+  };
+
+  const shareDhikr = async (text: string, count: number) => {
+    try {
+      await Share.share({
+        message: `🕌 ${text}\n\n🔁 العدد: ${count} مرات\n\n📱 تطبيق حصن نفسك - بالأذكار تطمئن القلوب`,
+      });
+    } catch (error) {}
+  };
+
+  const shareCategory = async () => {
+    try {
+      const categoryAzkar = filteredAzkar;
+      const totalCompleted = categoryAzkar.reduce((sum, item) => sum + item.completed, 0);
+      const totalTarget = categoryAzkar.reduce((sum, item) => sum + item.count, 0);
+      
+      let text = `🕌 ${selectedCategory}\n\n`;
+      categoryAzkar.forEach((item) => {
+        text += `✅ ${item.text}\n   🔁 ${item.completed}/${item.count}\n\n`;
+      });
+      text += `📊 الإجمالي: ${totalCompleted}/${totalTarget}\n\n`;
+      text += `📱 تطبيق حصن نفسك - بالأذكار تطمئن القلوب`;
+      
+      await Share.share({ message: text });
+    } catch (error) {}
   };
 
   const getProgressColor = (completed: number, target: number) => {
@@ -141,6 +167,17 @@ export default function AdhkarScreen() {
           <Text style={styles.addButtonText}>إضافة ذكر جديد</Text>
         </TouchableOpacity>
 
+        {/* Share Category Button */}
+        {filteredAzkar.length > 0 && (
+          <TouchableOpacity
+            style={[styles.shareCategoryButton, { backgroundColor: theme.card, borderColor: theme.border }]}
+            onPress={shareCategory}
+          >
+            <Ionicons name="share-social-outline" size={20} color={theme.neon} />
+            <Text style={[styles.shareCategoryText, { color: theme.neon }]}>مشاركة {selectedCategory}</Text>
+          </TouchableOpacity>
+        )}
+
         {/* Azkar List */}
         {filteredAzkar.map((item) => {
           const itemProgress = getProgressColor(item.completed, item.count);
@@ -202,6 +239,13 @@ export default function AdhkarScreen() {
               </TouchableOpacity>
               
               <View style={styles.azkarControls}>
+                <TouchableOpacity
+                  style={[styles.controlButton, { backgroundColor: theme.neon + '20' }]}
+                  onPress={() => shareDhikr(item.text, item.count)}
+                >
+                  <Ionicons name="share-social" size={20} color={theme.neon} />
+                </TouchableOpacity>
+                
                 <TouchableOpacity
                   style={[styles.controlButton, { backgroundColor: theme.progressBg }]}
                   onPress={() => handleIncrement(item.id)}
@@ -397,6 +441,21 @@ const styles = StyleSheet.create({
   addButtonText: {
     color: '#fff',
     fontSize: 16,
+    fontWeight: '600',
+  },
+  shareCategoryButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginHorizontal: 20,
+    marginBottom: 20,
+    padding: 12,
+    borderRadius: 12,
+    borderWidth: 1,
+    gap: 8,
+  },
+  shareCategoryText: {
+    fontSize: 14,
     fontWeight: '600',
   },
   azkarCard: {
